@@ -31,4 +31,4 @@ ADD src/handler.py /workspace/worker/handler.py
 # RUN chmod +x /workspace/worker/start.sh
 
 # COPY workflows/ /workspace/worker/workflows/
-COPY input/ /comfyui/input/
+# COPY input/ /comfyui/input/
