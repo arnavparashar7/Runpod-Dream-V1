@@ -23,13 +23,12 @@ RUN comfy model download --url https://huggingface.co/XLabs-AI/flux-controlnet-d
 WORKDIR /workspace/worker
 
 # Create the src directory
-RUN mkdir -p /workspace/worker/src
+# RUN mkdir -p /workspace/worker/src
 
-# Copy your start.sh and handler.py
+
 # ADD src/start.sh /workspace/worker/start.sh
 ADD src/handler.py /workspace/worker/handler.py
 # RUN chmod +x /workspace/worker/start.sh
 
-# Copy your workflows
-COPY workflows/ /workspace/worker/workflows/
+# COPY workflows/ /workspace/worker/workflows/
 COPY input/ /comfyui/input/
