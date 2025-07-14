@@ -26,9 +26,9 @@ WORKDIR /workspace/worker
 RUN mkdir -p /workspace/worker/src
 
 # Copy your start.sh and handler.py
-ADD src/start.sh /workspace/worker/start.sh
-ADD src/handler.py /workspace/worker/src/handler.py
-RUN chmod +x /workspace/worker/start.sh
+# ADD src/start.sh /workspace/worker/start.sh
+ADD src/handler.py /workspace/worker/handler.py
+# RUN chmod +x /workspace/worker/start.sh
 
 # Copy your workflows
 COPY workflows/ /workspace/worker/workflows/
