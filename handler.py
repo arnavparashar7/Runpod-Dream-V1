@@ -68,13 +68,15 @@ def handler(job):
         workflow = json.load(file)
 
     # Inject prompts
+    prompt_text = (data.get("prompt") or [""])[0]
+
     for prompt_cfg in config["prompts"]:
         node_id = str(prompt_cfg["node"])
-        input_idx = prompt_cfg["input_index"]
         if "fixed_value" in prompt_cfg:
             workflow[node_id]["inputs"]["text"] = prompt_cfg["fixed_value"]
         else:
-            workflow[node_id]["inputs"]["text"] = data["prompt"]
+            workflow[node_id]["inputs"]["text"] = prompt_text
+
 
     # Prepare unique filename
     unique_id = f"{uuid.uuid4().hex}.png"
