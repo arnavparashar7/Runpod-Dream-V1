@@ -69,12 +69,13 @@ def handler(job):
     workflow["59"]["inputs"]["image"] = "input_image.png"
 
     # Prepare images
-    images = [
-        {
-            "name": "input_image.png",
-            "image": image_url_to_base64(job_input["images"][0])
-        }
-    ]
+    images = []
+    for idx, url in enumerate(job_input["images"]):
+        images.append({
+            "name": f"input_image_{idx}.png",
+            "image": image_url_to_base64(url)
+        })
+
 
     # Upload images to ComfyUI
     upload_images(images)
@@ -89,7 +90,7 @@ def handler(job):
 
     # Poll for result
     max_attempts = 30
-    delay_seconds = 2
+    delay_seconds = 5
 
     for attempt in range(max_attempts):
         history = get_history(prompt_id)
