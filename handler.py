@@ -57,58 +57,29 @@ def get_image_data(filename, subfolder, image_type):
     return response.content
 
 def handler(job):
-    job_input = job.get("input")
-    if not job_input:
-        raise ValueError("Missing 'input' in job payload.")
-
-    workflow_input = job_input.get("workflow")
-    if not workflow_input:
-        raise ValueError("Missing 'workflow' in job input.")
-
-    workflow_type = workflow_input.get("type")
-    if not workflow_type:
-        raise ValueError("Missing 'workflow.type' in input.")
-
-    prompt_input_text = workflow_input.get("prompt_input")
-    if prompt_input_text is None:
-        raise ValueError("Missing 'prompt_input' in workflow.")
-
-    if "images" not in job_input or not isinstance(job_input["images"], list):
-        raise ValueError("'images' must be a list of image URLs or objects.")
+    job_input = job["input"]
+    workflow_type = job_input["workflow"]["type"]
 
     # Load workflow template from disk
     with open(f"workflows/{workflow_type}.json", "r") as file:
         workflow = json.load(file)
 
-    # Validate required nodes
-    if "43" not in workflow or "inputs" not in workflow["43"]:
-        raise ValueError("Workflow template is missing node 43 or its inputs.")
-    if "59" not in workflow or "inputs" not in workflow["59"]:
-        raise ValueError("Workflow template is missing node 59 or its inputs.")
-
     # Patch the workflow
-    workflow["43"]["inputs"]["text"] = prompt_input_text
+    workflow["43"]["inputs"]["text"] = job_input["workflow"]["prompt_input"]
     workflow["59"]["inputs"]["image"] = "input_image.png"
 
-    # Prepare images
-    images = []
-    for idx, item in enumerate(job_input["images"]):
-        if isinstance(item, str):
-            # Just a URL string
-            images.append({
-                "name": f"input_image_{idx}.png",
-                "image": image_url_to_base64(item)
-            })
-        elif isinstance(item, dict) and "image" in item and "name" in item:
-            # Client provided an object
-            if item["image"].startswith("http"):
-                item_copy = item.copy()
-                item_copy["image"] = image_url_to_base64(item["image"])
-                images.append(item_copy)
-            else:
-                images.append(item)
-        else:
-            raise ValueError(f"Invalid image format at index {idx}. Must be string or object with 'name' and 'image'.")
+    # Validate images
+    images = job_input["images"]
+    
+    if not isinstance(images, list):
+        raise ValueError("'images' must be a list of objects with 'name' and 'image' keys.")
+    
+    for idx, image in enumerate(images):
+        if not isinstance(image, dict):
+            raise ValueError(f"Image at index {idx} is not an object.")
+        if "name" not in image or "image" not in image:
+            raise ValueError(f"Image at index {idx} missing 'name' or 'image' key.")
+
 
     # Upload images to ComfyUI
     upload_images(images)
@@ -157,7 +128,6 @@ def handler(job):
         "prompt_id": prompt_id,
         "message": "Workflow did not complete in time."
     }
-
 if __name__ == "__main__":
     print("worker-comfyui - Starting handler...")
     runpod.serverless.start({"handler": handler})
