@@ -2,6 +2,7 @@ import json
 import requests
 import base64
 import time
+import runpod
 
 COMFY_HOST = "127.0.0.1:8188"
 
