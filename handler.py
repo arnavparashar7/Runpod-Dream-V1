@@ -68,21 +68,31 @@ def handler(job):
     workflow["43"]["inputs"]["text"] = job_input["workflow"]["prompt_input"]
     workflow["59"]["inputs"]["image"] = "input_image.png"
 
-    # Validate images
+    # Validate and process images
     images = job_input["images"]
     
     if not isinstance(images, list):
         raise ValueError("'images' must be a list of objects with 'name' and 'image' keys.")
     
+    processed_images = []
     for idx, image in enumerate(images):
         if not isinstance(image, dict):
             raise ValueError(f"Image at index {idx} is not an object.")
         if "name" not in image or "image" not in image:
             raise ValueError(f"Image at index {idx} missing 'name' or 'image' key.")
-
-
+        
+        img_data = image["image"]
+        if img_data.startswith("http"):
+            img_data = image_url_to_base64(img_data)
+        
+        processed_images.append({
+            "name": image["name"],
+            "image": img_data
+        })
+    
     # Upload images to ComfyUI
-    upload_images(images)
+    upload_images(processed_images)
+
 
     # Queue the workflow
     client_id = "handler-client-1234"
