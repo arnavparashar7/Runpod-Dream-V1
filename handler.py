@@ -1,24 +1,32 @@
-import runpod
-import os
-import base64
+import json
 import requests
-from io import BytesIO
+import base64
+import runpod
+import json
+import os
 
-# Constants for Cloudflare
+# --- Environment Configuration ---
 CLOUDFLARE_ACCOUNT_ID = os.environ.get("CLOUDFLARE_ACCOUNT_ID")
 CLOUDFLARE_API_TOKEN = os.environ.get("CLOUDFLARE_API_TOKEN")
+RUNPOD_API_KEY = os.environ.get("RUNPOD_API_KEY")
+ENDPOINT_ID = os.environ.get("ENDPOINT_ID")
 
-COMFY_URL = os.environ.get("COMFY_URL", "http://127.0.0.1:8188")
+# --- Initialize RunPod ---
+runpod.api_key = RUNPOD_API_KEY
+endpoint = runpod.Endpoint(ENDPOINT_ID)
+
+def image_url_to_base64(url):
+    response = requests.get(url)
+    response.raise_for_status()
+    return base64.b64encode(response.content).decode("utf-8")
 
 def handler(job):
     job_input = job["input"]
-    workflow_type = job_input["workflow"].get("type")
+    workflow_type = job_input["workflow"]["type"]
 
-    # Load the selected workflow
-    with open(f"workflows/{workflow_type}.json", "r") as f:
-        workflow = json.load(f)
+    with open(f"workflows/{workflow_type}.json", "r") as file:
+        workflow = json.load(file)
 
-    # Inject input values depending on workflow type
     match workflow_type:
         case "fill":
             workflow["43"]["inputs"]["text"] = job_input["workflow"]["prompt_input"]
@@ -28,103 +36,47 @@ def handler(job):
             workflow["63"]["inputs"]["text"] = job_input["workflow"]["prompt_input"]
             workflow["14"]["inputs"]["image"] = "input_image.png"
             workflow["28"]["inputs"]["ControlNetStrength"] = job_input["workflow"].get("ControlNetStrength", 0.8)
-            workflow["27"]["inputs"]["denoise_strength"] = job_input["workflow"].get("denoise_strength", 0.8)
-
+            workflow["27"]["inputs"]["denoise_strength"] = job_input["workflow"].get("desnoise_strength", 0.8)
+            
         case _:
-            return {"error": f"Unsupported workflow type: {workflow_type}"}
+            return {"error": f"Unknown workflow type: {workflow_type}"}
 
-    # Get the image URL and convert to base64
-    image_url = job_input.get("image_url")
-    if not image_url:
-        return {"error": "Missing image_url in input."}
 
-    try:
-        response = requests.get(image_url)
-        response.raise_for_status()
-        image_b64 = base64.b64encode(response.content).decode("utf-8")
-    except Exception as e:
-        return {"error": f"Failed to download or encode image: {str(e)}"}
+    image_url = job_input["image_url"]
+    
+    runpod_input = {
+        "workflow": workflow,
+        "images": [
+          {
+            "name": "image_input.png",
+            "image": image_url_to_base64(image_url),
+          }
+        ]
+      }
+    return runpod_input
 
-    # Upload image to ComfyUI
-    files = {
-        "image": ("input_image.png", base64.b64decode(image_b64), "image/png"),
-        "overwrite": (None, "true")
-    }
-    try:
-        up = requests.post(f"{COMFY_URL}/upload/image", files=files)
-        up.raise_for_status()
-    except Exception as e:
-        return {"error": f"Image upload to ComfyUI failed: {str(e)}"}
+        # Run the job on the remote endpoint
+    result = endpoint.run_sync(runpod_input)
+    
+    # --- Decode and Upload the Result to Cloudflare ---
 
-    # Queue the workflow
-    try:
-        queue_payload = {
-            "prompt": workflow,
-            "client_id": "handler-client-1234"
-        }
-        queued = requests.post(f"{COMFY_URL}/prompt", json=queue_payload)
-        queued.raise_for_status()
-        prompt_id = queued.json().get("prompt_id")
-    except Exception as e:
-        return {"error": f"Failed to queue workflow: {str(e)}"}
+    # 1. Get the base64 data and decode it back to binary bytes
+    image_base64 = result["images"][0]["data"]
+    image_bytes = base64.b64decode(image_base64)
 
-    if not prompt_id:
-        return {"error": "No prompt_id received from ComfyUI."}
+    # 2. Prepare the request for the Cloudflare API
+    api_url = f"https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/images/v1"
+    headers = {"Authorization": f"Bearer {CLOUDFLARE_API_TOKEN}"}
+    files = {"file": (f"{unique_id}.png", image_bytes, "image/png")}
 
-    # Poll for result (5 sec * 30 times = up to 2.5 min)
-    for _ in range(30):
-        try:
-            result = requests.get(f"{COMFY_URL}/history/{prompt_id}").json()
-            if prompt_id in result:
-                output_data = []
-                for node_id, node in result[prompt_id].get("outputs", {}).items():
-                    for img in node.get("images", []):
-                        view_params = {
-                            "filename": img["filename"],
-                            "subfolder": img.get("subfolder", ""),
-                            "type": img.get("type", "output")
-                        }
-                        img_bytes = requests.get(f"{COMFY_URL}/view", params=view_params).content
+    # 3. Post the image to Cloudflare
+    response = requests.post(api_url, headers=headers, files=files)
+    response.raise_for_status()
 
-                        # Upload to Cloudflare
-                        if CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN:
-                            headers = {
-                                "Authorization": f"Bearer {CLOUDFLARE_API_TOKEN}"
-                            }
-                            upload_url = f"https://api.cloudflare.com/client/v4/accounts/{CLOUDFLARE_ACCOUNT_ID}/images/v1"
-                            files = {"file": (img["filename"], BytesIO(img_bytes), "image/png")}
+    # 4. Extract the public URL and return it
+    upload_result = response.json()
+    public_url = upload_result["result"]["variants"][0]
 
-                            cf_response = requests.post(upload_url, headers=headers, files=files)
-                            cf_response.raise_for_status()
-                            image_url = cf_response.json()["result"]["variants"][0]
+    return public_url
 
-                            output_data.append({
-                                "filename": img["filename"],
-                                "url": image_url
-                            })
-                        else:
-                            # Fallback to base64
-                            output_data.append({
-                                "filename": img["filename"],
-                                "data": base64.b64encode(img_bytes).decode("utf-8")
-                            })
-
-                return {
-                    "status": "completed",
-                    "prompt_id": prompt_id,
-                    "images": output_data
-                }
-        except Exception:
-            pass
-
-        time.sleep(5)
-
-    return {
-        "status": "timeout",
-        "prompt_id": prompt_id,
-        "message": "Workflow did not complete in time."
-    }
-
-if __name__ == "__main__":
-    print("worker-comfyui - Starting handler...")
-    runpod.serverless.start({"handler": handler})
+runpod.serverless.start({"handler": handler})
