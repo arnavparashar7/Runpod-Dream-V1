@@ -1,7 +1,7 @@
-FROM runpod/worker-comfyui:5.1.0-base
+FROM runpod/worker-comfyui:5.2.0-base
 
 # --- Install Custom Nodes ---
-RUN comfy-node-install comfyui-kjnodes x-flux-comfyui
+RUN comfy-node-install comfyui-kjnodes x-flux-comfyui comfyui_controlnet_aux ComfyUIFlorence2
 
 
 RUN comfy model download --url https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors --relative-path models/clip --filename clip_l.safetensors
@@ -17,10 +17,13 @@ RUN comfy model download --url https://huggingface.co/Comfy-Org/Lumina_Image_2.0
 # Flux ControlNet Model
 RUN comfy model download --url https://huggingface.co/XLabs-AI/flux-controlnet-depth-v3/resolve/main/flux-depth-controlnet-v3.safetensors --relative-path models/controlnet --filename flux-depth-controlnet-v3.safetensors
 
+#florence Model download
+# LLM
+RUN huggingface-cli download microsoft/Florence-2-large-ft --local-dir /comfyui/models/LLM/Florence-2-large-ft
+
 # --- Setup worker application files ---
 # Set the working directory for your application code
 # This will be /workspace/worker, where your handler and workflows are.
-WORKDIR /workspace/worker
 
 # Create the src directory
 # RUN mkdir -p /workspace/worker/src
