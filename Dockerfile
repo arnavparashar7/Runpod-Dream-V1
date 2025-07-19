@@ -1,7 +1,7 @@
 FROM runpod/worker-comfyui:5.2.0-base
 
 # --- Install Custom Nodes ---
-RUN comfy-node-install comfyui-kjnodes x-flux-comfyui comfyui_controlnet_aux ComfyUIFlorence2
+RUN comfy-node-install comfyui-kjnodes x-flux-comfyui comfyui_controlnet_aux comfyui-florence2
 
 
 RUN comfy model download --url https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors --relative-path models/clip --filename clip_l.safetensors
