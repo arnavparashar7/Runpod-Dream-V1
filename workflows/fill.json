@@ -172,7 +172,7 @@
     },
     "46": {
         "inputs": {
-            "unet_name": "d1f2p2de878c73f2ok1g@e18ce6bc07d1c1c479d5b8102dbd319d",
+            "unet_name": "flux1-dev-kontext_fp8_scaled.safetensors",
             "weight_dtype": "default"
         },
         "class_type": "UNETLoader",
@@ -182,7 +182,7 @@
     },
     "47": {
         "inputs": {
-            "vae_name": "ae.sft"
+            "vae_name": "ae.safetensors"
         },
         "class_type": "VAELoader",
         "_meta": {
@@ -191,7 +191,7 @@
     },
     "59": {
         "inputs": {
-            "image": "input_image.png"
+            "image": "https://image.cdn2.seaart.me/2025-07-09/d1n8oa5e878c73behrcg/61a6f04d7bd15936e41fd82c2e35468c.webp"
         },
         "class_type": "LoadImage",
         "_meta": {
