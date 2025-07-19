@@ -27,7 +27,7 @@ WORKDIR /workspace/worker
 
 
 # ADD src/start.sh /workspace/worker/start.sh
-COPY handler.py .
+# COPY handler.py .
 # RUN chmod +x /workspace/worker/start.sh
 
 # COPY workflows/ /workspace/worker/workflows/
