@@ -1,5 +1,8 @@
 FROM runpod/worker-comfyui:5.2.0-base
 
+# Install git + git-lfs
+RUN apt-get update && apt-get install -y git git-lfs && git lfs install
+
 # --- Install Custom Nodes ---
 RUN comfy-node-install comfyui-kjnodes x-flux-comfyui comfyui_controlnet_aux comfyui-florence2 comfyui-gguf comfyui_ryanonyheinside
 
@@ -11,8 +14,9 @@ RUN comfy model download --url https://huggingface.co/comfyanonymous/flux_text_e
 RUN comfy model download --url https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors --relative-path models/diffusion_models --filename flux1-dev-kontext_fp8_scaled.safetensors
 RUN comfy model download --url https://huggingface.co/Kijai/flux-fp8/resolve/main/flux1-dev-fp8.safetensors --relative-path models/diffusion_models --filename flux1-dev-fp8.safetensors
 
-#Lora
-RUN huggingface-cli snapshot download alimama-creative/FLUX.1-Turbo-Alpha --local-dir /comfyui/models/flux/FLUX.1-Turbo-Alpha
+# Install huggingface_hub and download model
+RUN pip install --no-cache-dir -U huggingface_hub && \
+    python3 -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='alimama-creative/FLUX.1-Turbo-Alpha', local_dir='/comfyui/models/flux/FLUX.1-Turbo-Alpha')"
 
 # VAE
 RUN comfy model download --url https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors --relative-path models/vae --filename ae.safetensors
