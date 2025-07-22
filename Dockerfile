@@ -1,6 +1,6 @@
 FROM runpod/worker-comfyui:5.2.0-base
 
-# Install git + git-lfs
+#python req
 RUN apt-get update && apt-get install -y git git-lfs && git lfs install
 
 # --- Install Custom Nodes ---
@@ -14,9 +14,8 @@ RUN comfy model download --url https://huggingface.co/comfyanonymous/flux_text_e
 RUN comfy model download --url https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors --relative-path models/diffusion_models --filename flux1-dev-kontext_fp8_scaled.safetensors
 RUN comfy model download --url https://huggingface.co/Kijai/flux-fp8/resolve/main/flux1-dev-fp8.safetensors --relative-path models/diffusion_models --filename flux1-dev-fp8.safetensors
 
-# Install huggingface_hub and download model
-RUN pip install --no-cache-dir -U huggingface_hub && \
-    python3 -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='alimama-creative/FLUX.1-Turbo-Alpha', local_dir='/comfyui/models/flux/FLUX.1-Turbo-Alpha')"
+#Lora
+RUN huggingface-cli snapshot download alimama-creative/FLUX.1-Turbo-Alpha --local-dir /comfyui/models/flux/FLUX.1-Turbo-Alpha
 
 # VAE
 RUN comfy model download --url https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors --relative-path models/vae --filename ae.safetensors
@@ -25,10 +24,10 @@ RUN comfy model download --url https://huggingface.co/Comfy-Org/Lumina_Image_2.0
 RUN comfy model download --url https://huggingface.co/XLabs-AI/flux-controlnet-depth-v3/resolve/main/flux-depth-controlnet-v3.safetensors --relative-path models/controlnet --filename flux-depth-controlnet-v3.safetensors
 
 # Depth ControlNet Model
-RUN comfy model download --url https://huggingface.co/spaces/depth-anything/Depth-Anything-V2 --relative-path models/controlnet --filename depth_anything_v2_vitl.pth
+RUN git clone https://huggingface.co/spaces/depth-anything/Depth-Anything-V2 /comfyui/models/controlnet/depth-anything --relative-path models/controlnet --filename depth_anything_v2_vitl.pth
 
 # sigclip_vision_384
-RUN comfy model download --url https://huggingface.co/Comfy-Org/sigclip_vision_384/resolve/main/Siglip-ViT-B-384.safetensors --relative-path models/clip --filename sigclip_vision_384.safetensors
+RUN comfy model download --url https://huggingface.co/Comfy-Org/sigclip_vision_384/blob/main/sigclip_vision_patch14_384.safetensors --relative-path models/clip --filename sigclip_vision_384.safetensors
 
 # FLUX.1-Fill-dev-GGUF
 RUN comfy model download --url https://huggingface.co/YarvixPA/FLUX.1-Fill-dev-GGUF/resolve/main/FLUX.1-Fill-dev-GGUF.gguf --relative-path models/gguf --filename FLUX.1-Fill-dev-GGUF.gguf
