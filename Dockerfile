@@ -3,6 +3,9 @@ FROM runpod/worker-comfyui:5.2.0-base
 #python req
 RUN apt-get update && apt-get install -y git git-lfs && git lfs install
 
+#Florence requiremment Transformers
+RUN pip install transformers==4.38.2
+
 # --- Install Custom Nodes ---
 RUN comfy-node-install comfyui-kjnodes x-flux-comfyui comfyui_controlnet_aux comfyui-florence2 comfyui-gguf comfyui_ryanonyheinside
 
