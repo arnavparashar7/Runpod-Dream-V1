@@ -28,7 +28,7 @@ RUN comfy model download --url https://huggingface.co/XLabs-AI/flux-controlnet-d
 RUN comfy model download --url https://huggingface.co/spaces/depth-anything/Depth-Anything-V2 --relative-path models/controlnet --filename depth_anything_v2_vitl.pth
 
 # sigclip_vision_384
-RUN comfy model download --url https://huggingface.co/Comfy-Org/sigclip_vision_384/resolve/main/sigclip_vision_384.safetensors --relative-path models/clip --filename sigclip_vision_384.safetensors
+RUN comfy model download --url https://huggingface.co/Comfy-Org/sigclip_vision_384/resolve/main/Siglip-ViT-B-384.safetensors --relative-path models/clip --filename sigclip_vision_384.safetensors
 
 # FLUX.1-Fill-dev-GGUF
 RUN comfy model download --url https://huggingface.co/YarvixPA/FLUX.1-Fill-dev-GGUF/resolve/main/FLUX.1-Fill-dev-GGUF.gguf --relative-path models/gguf --filename FLUX.1-Fill-dev-GGUF.gguf
