@@ -34,7 +34,7 @@ RUN comfy model download --url "https://huggingface.co/spaces/depth-anything/Dep
 RUN comfy model download --url "https://huggingface.co/Comfy-Org/sigclip_vision_384/resolve/main/sigclip_vision_patch14_384.safetensors" --relative-path models/clip --filename sigclip_vision_384.safetensors
 
 # FLUX.1-Fill-dev-GGUF
-RUN comfy model download --url "https://huggingface.co/YarvixPA/FLUX.1-Fill-dev-GGUF/resolve/main/FLUX.1-Fill-dev-GGUF.gguf" --relative-path models/gguf --filename FLUX.1-Fill-dev-GGUF.gguf
+RUN comfy model download --url "https://huggingface.co/YarvixPA/FLUX.1-Fill-dev-GGUF" --relative-path models/gguf --filename FLUX.1-Fill-dev-GGUF.gguf
 
 #florence LLM
 RUN huggingface-cli download microsoft/Florence-2-large-ft --local-dir /comfyui/models/LLM/Florence-2-large-ft
