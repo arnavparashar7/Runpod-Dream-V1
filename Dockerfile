@@ -27,7 +27,8 @@ RUN comfy model download --url https://huggingface.co/Comfy-Org/Lumina_Image_2.0
 RUN comfy model download --url https://huggingface.co/XLabs-AI/flux-controlnet-depth-v3/resolve/main/flux-depth-controlnet-v3.safetensors --relative-path models/controlnet --filename flux-depth-controlnet-v3.safetensors
 
 # Depth ControlNet Model
-RUN git clone https://huggingface.co/spaces/depth-anything/Depth-Anything-V2 /comfyui/models/controlnet/depth-anything --relative-path models/controlnet --filename depth_anything_v2_vitl.pth
+RUN comfy model download --url "https://huggingface.co/spaces/depth-anything/Depth-Anything-V2"  --relative-path models/controlnet --filename depth_anything_v2_vitl.pth
+# /comfyui/models/controlnet/depth-anything
 
 # sigclip_vision_384
 RUN comfy model download --url "https://huggingface.co/Comfy-Org/sigclip_vision_384/resolve/main/sigclip_vision_patch14_384.safetensors" --relative-path models/clip --filename sigclip_vision_384.safetensors
