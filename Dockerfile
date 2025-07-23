@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y git git-lfs && git lfs install
 RUN pip install transformers==4.38.2
 
 # --- Install Custom Nodes ---
-RUN comfy-node-install comfyui-kjnodes x-flux-comfyui comfyui_controlnet_aux comfyui-florence2 comfyui-gguf comfyui_ryanonyheinside
+RUN comfy-node-install comfyui-kjnodes x-flux-comfyui comfyui_controlnet_aux comfyui-florence2 comfyui-gguf comfyui_ryanonyheinside gguf
 
 #Text Enccoders
 RUN comfy model download --url https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors --relative-path models/clip --filename clip_l.safetensors
