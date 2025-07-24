@@ -322,18 +322,6 @@
             "title": "VAE Decode"
         }
     },
-    "54": {
-        "inputs": {
-            "images": [
-                "43",
-                0
-            ]
-        },
-        "class_type": "PreviewImage",
-        "_meta": {
-            "title": "Preview Image"
-        }
-    },
     "66": {
         "inputs": {
             "pixels": [
@@ -392,6 +380,19 @@
         "class_type": "GetImageSizeAndCount",
         "_meta": {
             "title": "Get Image Size & Count"
+        }
+    },
+    "76": {
+        "inputs": {
+            "filename_prefix": "ComfyUI",
+            "images": [
+                "43",
+                0
+            ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+            "title": "Save Image"
         }
     }
 }
