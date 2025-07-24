@@ -331,18 +331,6 @@
             "title": "CLIP Text Encode (Prompt)"
         }
     },
-    "77": {
-        "inputs": {
-            "images": [
-                "74",
-                0
-            ]
-        },
-        "class_type": "PreviewImage",
-        "_meta": {
-            "title": "Preview Image"
-        }
-    },
     "78": {
         "inputs": {
             "pixels": [
@@ -357,6 +345,19 @@
         "class_type": "VAEEncode",
         "_meta": {
             "title": "VAE Encode"
+        }
+    },
+    "83": {
+        "inputs": {
+            "filename_prefix": "ComfyUI",
+            "images": [
+                "74",
+                0
+            ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+            "title": "Save Image"
         }
     }
 }
