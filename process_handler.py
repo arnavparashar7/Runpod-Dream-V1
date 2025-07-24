@@ -52,7 +52,7 @@ def handler(job):
         "workflow": workflow,
         "images": [
           {
-            "name": "image_input.png",
+            "name": "input_image.png",
             "image": image_url_to_base64(image_url),
           }
         ]
