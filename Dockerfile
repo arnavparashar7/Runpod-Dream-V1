@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y git git-lfs && git lfs install
 RUN pip install transformers==4.38.2
 
 # --- Install Custom Nodes ---
-RUN comfy-node-install comfyui-kjnodes x-flux-comfyui comfyui_controlnet_aux comfyui-florence2 comfyui-gguf comfyui_ryanonyheinside gguf
+RUN comfy-node-install comfyui-kjnodes x-flux-comfyui comfyui_controlnet_aux comfyui-florence2 
 
 #Text Enccoders
 RUN comfy model download --url https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors --relative-path models/clip --filename clip_l.safetensors
@@ -31,15 +31,15 @@ RUN comfy model download --url "https://huggingface.co/spaces/depth-anything/Dep
 # /comfyui/models/controlnet/depth-anything
 
 # sigclip_vision_384
-RUN comfy model download --url "https://huggingface.co/Comfy-Org/sigclip_vision_384/resolve/main/sigclip_vision_patch14_384.safetensors" --relative-path models/clip --filename sigclip_vision_384.safetensors
+#RUN comfy model download --url "https://huggingface.co/Comfy-Org/sigclip_vision_384/resolve/main/sigclip_vision_patch14_384.safetensors" --relative-path models/clip --filename sigclip_vision_384.safetensors
 
 # FLUX.1-Fill-dev-GGUF
-RUN comfy model download --url "https://huggingface.co/YarvixPA/FLUX.1-Fill-dev-GGUF" --relative-path models/gguf --filename FLUX.1-Fill-dev-GGUF.gguf
+#RUN comfy model download --url "https://huggingface.co/YarvixPA/FLUX.1-Fill-dev-GGUF" --relative-path models/gguf --filename FLUX.1-Fill-dev-GGUF.gguf
 
 #FLUX Redux
-RUN comfy model download --url "https://huggingface.co/black-forest-labs/FLUX.1-Redux-dev" --relative-path models/loras --filename flux1-redux-dev.safetensors
+#RUN comfy model download --url "https://huggingface.co/black-forest-labs/FLUX.1-Redux-dev" --relative-path models/loras --filename flux1-redux-dev.safetensors
 #florence LLM
-RUN huggingface-cli download microsoft/Florence-2-large-ft --local-dir /comfyui/models/LLM/Florence-2-large-ft
+#RUN huggingface-cli download microsoft/Florence-2-large-ft --local-dir /comfyui/models/LLM/Florence-2-large-ft
 
 # --- Setup worker application files ---
 # Set the working directory for your application code
@@ -47,11 +47,11 @@ RUN huggingface-cli download microsoft/Florence-2-large-ft --local-dir /comfyui/
 
 # Create the src directory
 # RUN mkdir -p /workspace/worker/src
-
+COPY workflows/ ./workflows/
+COPY process_handler.py process_handler.py .
+COPY handler.py .
 
 # ADD src/start.sh /workspace/worker/start.sh
-# COPY handler.py .
 # RUN chmod +x /workspace/worker/start.sh
 
-# COPY workflows/ /workspace/worker/workflows/
 # COPY input/ /comfyui/input/
