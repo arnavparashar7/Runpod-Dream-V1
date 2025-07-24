@@ -510,7 +510,7 @@ def handler(job):
     print(f"worker-comfyui - Calling process_handler to transform input...")
     try:
         # Renamed variable for clarity
-        runpod_input = process_job_input_handler(job["input"])
+        runpod_input = process_job_input_handler(job)
         print(f"worker-comfyui - Input preprocessed successfully.")
     except Exception as e:
         print(f"worker-comfyui - Error during input preprocessing: {e}")
