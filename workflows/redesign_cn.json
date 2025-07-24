@@ -236,7 +236,7 @@
     },
     "31": {
         "inputs": {
-            "model_name": "flux1-dev-fp8.safetensors",
+            "model_name": "flux-dev-fp8",
             "controlnet_path": "flux-depth-controlnet-v3.safetensors"
         },
         "class_type": "LoadFluxControlNet",
