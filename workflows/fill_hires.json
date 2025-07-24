@@ -1,0 +1,362 @@
+{
+    "1": {
+        "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn_scaled.safetensors",
+            "type": "flux",
+            "device": "default"
+        },
+        "class_type": "DualCLIPLoader",
+        "_meta": {
+            "title": "DualCLIPLoader"
+        }
+    },
+    "4": {
+        "inputs": {
+            "pixels": [
+                "39",
+                0
+            ],
+            "vae": [
+                "47",
+                0
+            ]
+        },
+        "class_type": "VAEEncode",
+        "_meta": {
+            "title": "VAE Encode"
+        }
+    },
+    "6": {
+        "inputs": {
+            "seed": 757619622412420,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1,
+            "model": [
+                "46",
+                0
+            ],
+            "positive": [
+                "14",
+                0
+            ],
+            "negative": [
+                "11",
+                0
+            ],
+            "latent_image": [
+                "4",
+                0
+            ]
+        },
+        "class_type": "KSampler",
+        "_meta": {
+            "title": "KSampler"
+        }
+    },
+    "11": {
+        "inputs": {
+            "conditioning": [
+                "43",
+                0
+            ]
+        },
+        "class_type": "ConditioningZeroOut",
+        "_meta": {
+            "title": "ConditioningZeroOut"
+        }
+    },
+    "13": {
+        "inputs": {
+            "conditioning": [
+                "43",
+                0
+            ],
+            "latent": [
+                "4",
+                0
+            ]
+        },
+        "class_type": "ReferenceLatent",
+        "_meta": {
+            "title": "ReferenceLatent"
+        }
+    },
+    "14": {
+        "inputs": {
+            "guidance": 2.5,
+            "conditioning": [
+                "13",
+                0
+            ]
+        },
+        "class_type": "FluxGuidance",
+        "_meta": {
+            "title": "FluxGuidance"
+        }
+    },
+    "39": {
+        "inputs": {
+            "image": [
+                "59",
+                0
+            ]
+        },
+        "class_type": "FluxKontextImageScale",
+        "_meta": {
+            "title": "FluxKontextImageScale"
+        }
+    },
+    "43": {
+        "inputs": {
+            "text": "Fill this empty room with a in b with c style. Arrange the furniture naturally to make the space feel inviting and functional. Use realistic proportions and details. Include warm ambient lighting from ceiling fixtures or lamps to enhance the cozy atmosphere, with soft shadows and natural light from windows if visible. Focus on a photorealistic interior design look.\n",
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            },
+            "clip": [
+                "1",
+                0
+            ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+            "title": "CLIP Text Encode (Positive Prompt)"
+        }
+    },
+    "45": {
+        "inputs": {
+            "samples": [
+                "6",
+                0
+            ],
+            "vae": [
+                "47",
+                0
+            ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+            "title": "VAE Decode"
+        }
+    },
+    "46": {
+        "inputs": {
+            "unet_name": "flux1-dev-kontext_fp8_scaled.safetensors",
+            "weight_dtype": "default"
+        },
+        "class_type": "UNETLoader",
+        "_meta": {
+            "title": "Load Diffusion Model"
+        }
+    },
+    "47": {
+        "inputs": {
+            "vae_name": "ae.safetensors"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+            "title": "Load VAE"
+        }
+    },
+    "59": {
+        "inputs": {
+            "image": "input_image.png"
+        },
+        "class_type": "LoadImage",
+        "_meta": {
+            "title": "Load Image"
+        }
+    },
+    "61": {
+        "inputs": {
+            "vae_name": "ae.safetensors"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+            "title": "Load VAE"
+        }
+    },
+    "62": {
+        "inputs": {
+            "guidance": 3.5,
+            "conditioning": [
+                "76",
+                0
+            ]
+        },
+        "class_type": "FluxGuidance",
+        "_meta": {
+            "title": "FluxGuidance"
+        }
+    },
+    "65": {
+        "inputs": {
+            "model": [
+                "69",
+                0
+            ]
+        },
+        "class_type": "DifferentialDiffusion",
+        "_meta": {
+            "title": "Differential Diffusion"
+        }
+    },
+    "66": {
+        "inputs": {
+            "samples": [
+                "75",
+                0
+            ],
+            "vae": [
+                "61",
+                0
+            ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+            "title": "VAE Decode"
+        }
+    },
+    "68": {
+        "inputs": {
+            "text": "",
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            },
+            "clip": [
+                "70",
+                0
+            ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+            "title": "CLIP Text Encode (Prompt)"
+        }
+    },
+    "69": {
+        "inputs": {
+            "unet_name": "flux1-dev-fp8.safetensors",
+            "weight_dtype": "default"
+        },
+        "class_type": "UNETLoader",
+        "_meta": {
+            "title": "Load Diffusion Model"
+        }
+    },
+    "70": {
+        "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn_scaled.safetensors",
+            "type": "flux",
+            "device": "default"
+        },
+        "class_type": "DualCLIPLoader",
+        "_meta": {
+            "title": "DualCLIPLoader"
+        }
+    },
+    "74": {
+        "inputs": {
+            "method": "mkl",
+            "strength": 1,
+            "image_ref": [
+                "39",
+                0
+            ],
+            "image_target": [
+                "66",
+                0
+            ]
+        },
+        "class_type": "ColorMatch",
+        "_meta": {
+            "title": "Color Match"
+        }
+    },
+    "75": {
+        "inputs": {
+            "seed": 202942132759397,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "beta",
+            "denoise": 0.4000000000000001,
+            "model": [
+                "65",
+                0
+            ],
+            "positive": [
+                "62",
+                0
+            ],
+            "negative": [
+                "68",
+                0
+            ],
+            "latent_image": [
+                "78",
+                0
+            ]
+        },
+        "class_type": "KSampler",
+        "_meta": {
+            "title": "KSampler"
+        }
+    },
+    "76": {
+        "inputs": {
+            "text": "a furnished room with sofa and table",
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            },
+            "clip": [
+                "70",
+                0
+            ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+            "title": "CLIP Text Encode (Prompt)"
+        }
+    },
+    "77": {
+        "inputs": {
+            "images": [
+                "74",
+                0
+            ]
+        },
+        "class_type": "PreviewImage",
+        "_meta": {
+            "title": "Preview Image"
+        }
+    },
+    "78": {
+        "inputs": {
+            "pixels": [
+                "45",
+                0
+            ],
+            "vae": [
+                "61",
+                0
+            ]
+        },
+        "class_type": "VAEEncode",
+        "_meta": {
+            "title": "VAE Encode"
+        }
+    }
+}

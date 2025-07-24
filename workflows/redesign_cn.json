@@ -1,0 +1,397 @@
+{
+    "1": {
+        "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn_scaled.safetensors",
+            "type": "flux",
+            "device": "default"
+        },
+        "class_type": "DualCLIPLoader",
+        "_meta": {
+            "title": "DualCLIPLoader"
+        }
+    },
+    "2": {
+        "inputs": {
+            "pixels": [
+                "11",
+                0
+            ],
+            "vae": [
+                "13",
+                0
+            ]
+        },
+        "class_type": "VAEEncode",
+        "_meta": {
+            "title": "VAE Encode"
+        }
+    },
+    "3": {
+        "inputs": {
+            "seed": 601619060235283,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "denoise": 1,
+            "model": [
+                "12",
+                0
+            ],
+            "positive": [
+                "10",
+                0
+            ],
+            "negative": [
+                "7",
+                0
+            ],
+            "latent_image": [
+                "2",
+                0
+            ]
+        },
+        "class_type": "KSampler",
+        "_meta": {
+            "title": "KSampler"
+        }
+    },
+    "7": {
+        "inputs": {
+            "conditioning": [
+                "15",
+                0
+            ]
+        },
+        "class_type": "ConditioningZeroOut",
+        "_meta": {
+            "title": "ConditioningZeroOut"
+        }
+    },
+    "9": {
+        "inputs": {
+            "conditioning": [
+                "15",
+                0
+            ],
+            "latent": [
+                "2",
+                0
+            ]
+        },
+        "class_type": "ReferenceLatent",
+        "_meta": {
+            "title": "ReferenceLatent"
+        }
+    },
+    "10": {
+        "inputs": {
+            "guidance": 2.5,
+            "conditioning": [
+                "9",
+                0
+            ]
+        },
+        "class_type": "FluxGuidance",
+        "_meta": {
+            "title": "FluxGuidance"
+        }
+    },
+    "11": {
+        "inputs": {
+            "image": [
+                "14",
+                0
+            ]
+        },
+        "class_type": "FluxKontextImageScale",
+        "_meta": {
+            "title": "FluxKontextImageScale"
+        }
+    },
+    "12": {
+        "inputs": {
+            "unet_name": "flux1-dev-kontext_fp8_scaled.safetensors",
+            "weight_dtype": "default"
+        },
+        "class_type": "UNETLoader",
+        "_meta": {
+            "title": "Load Diffusion Model"
+        }
+    },
+    "13": {
+        "inputs": {
+            "vae_name": "ae.safetensors"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+            "title": "Load VAE"
+        }
+    },
+    "14": {
+        "inputs": {
+            "image": "input_image.png"
+        },
+        "class_type": "LoadImage",
+        "_meta": {
+            "title": "Load Image"
+        }
+    },
+    "15": {
+        "inputs": {
+            "text": "remove all the furniture like sofas, tables, plants, lights, fireplace, paintings, curtains and carpet",
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            },
+            "clip": [
+                "1",
+                0
+            ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+            "title": "CLIP Text Encode (Positive Prompt)"
+        }
+    },
+    "24": {
+        "inputs": {
+            "samples": [
+                "3",
+                0
+            ],
+            "vae": [
+                "13",
+                0
+            ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+            "title": "VAE Decode"
+        }
+    },
+    "27": {
+        "inputs": {
+            "noise_seed": 839339050288597,
+            "steps": 25,
+            "timestep_to_start_cfg": 1,
+            "true_gs": 3.5,
+            "image_to_image_strength": 0,
+            "denoise_strength": 1,
+            "model": [
+                "30",
+                0
+            ],
+            "conditioning": [
+                "40",
+                0
+            ],
+            "neg_conditioning": [
+                "41",
+                0
+            ],
+            "latent_image": [
+                "71",
+                0
+            ],
+            "controlnet_condition": [
+                "28",
+                0
+            ]
+        },
+        "class_type": "XlabsSampler",
+        "_meta": {
+            "title": "Xlabs Sampler"
+        }
+    },
+    "28": {
+        "inputs": {
+            "strength": 0.8000000000000002,
+            "controlnet": [
+                "31",
+                0
+            ],
+            "image": [
+                "32",
+                0
+            ]
+        },
+        "class_type": "ApplyFluxControlNet",
+        "_meta": {
+            "title": "Apply Flux ControlNet"
+        }
+    },
+    "30": {
+        "inputs": {
+            "unet_name": "flux1-dev-fp8.safetensors",
+            "weight_dtype": "fp8_e4m3fn"
+        },
+        "class_type": "UNETLoader",
+        "_meta": {
+            "title": "Load Diffusion Model"
+        }
+    },
+    "31": {
+        "inputs": {
+            "model_name": "flux1-dev-fp8.safetensors",
+            "controlnet_path": "flux-depth-controlnet-v3.safetensors"
+        },
+        "class_type": "LoadFluxControlNet",
+        "_meta": {
+            "title": "Load Flux ControlNet"
+        }
+    },
+    "32": {
+        "inputs": {
+            "ckpt_name": "depth_anything_v2_vitl.pth",
+            "resolution": 1024,
+            "image": [
+                "14",
+                0
+            ]
+        },
+        "class_type": "DepthAnythingV2Preprocessor",
+        "_meta": {
+            "title": "Depth Anything V2 - Relative"
+        }
+    },
+    "40": {
+        "inputs": {
+            "clip_l": [
+                "74",
+                0
+            ],
+            "t5xxl": [
+                "74",
+                0
+            ],
+            "guidance": 4,
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            },
+            "clip": [
+                "1",
+                0
+            ]
+        },
+        "class_type": "CLIPTextEncodeFlux",
+        "_meta": {
+            "title": "CLIPTextEncodeFlux"
+        }
+    },
+    "41": {
+        "inputs": {
+            "clip_l": "bad photo",
+            "t5xxl": "bad photo",
+            "guidance": 4,
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            },
+            "clip": [
+                "1",
+                0
+            ]
+        },
+        "class_type": "CLIPTextEncodeFlux",
+        "_meta": {
+            "title": "CLIPTextEncodeFlux"
+        }
+    },
+    "43": {
+        "inputs": {
+            "samples": [
+                "27",
+                0
+            ],
+            "vae": [
+                "13",
+                0
+            ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+            "title": "VAE Decode"
+        }
+    },
+    "54": {
+        "inputs": {
+            "images": [
+                "43",
+                0
+            ]
+        },
+        "class_type": "PreviewImage",
+        "_meta": {
+            "title": "Preview Image"
+        }
+    },
+    "66": {
+        "inputs": {
+            "pixels": [
+                "24",
+                0
+            ],
+            "vae": [
+                "13",
+                0
+            ]
+        },
+        "class_type": "VAEEncode",
+        "_meta": {
+            "title": "VAE Encode"
+        }
+    },
+    "71": {
+        "inputs": {
+            "width": [
+                "75",
+                1
+            ],
+            "height": [
+                "75",
+                2
+            ],
+            "batch_size": 1
+        },
+        "class_type": "EmptyLatentImage",
+        "_meta": {
+            "title": "Empty Latent Image"
+        }
+    },
+    "74": {
+        "inputs": {
+            "value": "A modern, minimalist living room with a warm, natural color palette dominated by beige and light wood tones. The room features a large, plush beige sofa with oversized cushions, positioned next to wide windows offering a scenic view of green hills. Sheer curtains filter soft daylight. A low wooden coffee table with clean lines sits on a textured neutral rug, set for tea with white plates and cups. The space includes subtle green plants in vases adding freshness. A sleek, modern fireplace with a black metallic finish anchors the room, with minimalist decor items on the mantel. The ceiling is clad in light wood panels with a large circular ceiling light, casting a cozy ambient glow. The overall atmosphere is calm, bright, and elegant in a Japanese-Scandinavian inspired style.",
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            }
+        },
+        "class_type": "PrimitiveStringMultiline",
+        "_meta": {
+            "title": "String (Multiline)"
+        }
+    },
+    "75": {
+        "inputs": {
+            "image": [
+                "24",
+                0
+            ]
+        },
+        "class_type": "GetImageSizeAndCount",
+        "_meta": {
+            "title": "Get Image Size & Count"
+        }
+    }
+}

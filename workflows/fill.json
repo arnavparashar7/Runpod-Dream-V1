@@ -29,7 +29,7 @@
     },
     "6": {
         "inputs": {
-            "seed": 350530340099539,
+            "seed": 757619622412420,
             "steps": 20,
             "cfg": 1,
             "sampler_name": "euler",
@@ -55,18 +55,6 @@
         "class_type": "KSampler",
         "_meta": {
             "title": "KSampler"
-        }
-    },
-    "8": {
-        "inputs": {
-            "images": [
-                "39",
-                0
-            ]
-        },
-        "class_type": "PreviewImage",
-        "_meta": {
-            "title": "Preview Image"
         }
     },
     "11": {
@@ -191,7 +179,7 @@
     },
     "59": {
         "inputs": {
-            "image": "https://image.cdn2.seaart.me/2025-07-09/d1n8oa5e878c73behrcg/61a6f04d7bd15936e41fd82c2e35468c.webp"
+            "image": "input_image.png"
         },
         "class_type": "LoadImage",
         "_meta": {
