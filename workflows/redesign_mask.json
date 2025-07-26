@@ -354,7 +354,7 @@
     },
     "34": {
         "inputs": {
-            "model": "Florence-2-large-ft",
+            "model": "microsoft/Florence-2-large-ft",
             "precision": "fp16",
             "attention": "sdpa"
         },
