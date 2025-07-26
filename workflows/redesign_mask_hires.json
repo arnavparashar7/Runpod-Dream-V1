@@ -1,0 +1,552 @@
+{
+    "1": {
+        "inputs": {
+            "noise_mask": true,
+            "positive": [
+                "12",
+                0
+            ],
+            "negative": [
+                "12",
+                1
+            ],
+            "vae": [
+                "18",
+                0
+            ],
+            "pixels": [
+                "22",
+                0
+            ],
+            "mask": [
+                "33",
+                0
+            ]
+        },
+        "class_type": "InpaintModelConditioning",
+        "_meta": {
+            "title": "InpaintModelConditioning"
+        }
+    },
+    "2": {
+        "inputs": {
+            "seed": 1014642931094358,
+            "steps": 25,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1,
+            "model": [
+                "6",
+                0
+            ],
+            "positive": [
+                "1",
+                0
+            ],
+            "negative": [
+                "1",
+                1
+            ],
+            "latent_image": [
+                "1",
+                2
+            ]
+        },
+        "class_type": "KSampler",
+        "_meta": {
+            "title": "KSampler"
+        }
+    },
+    "3": {
+        "inputs": {
+            "samples": [
+                "2",
+                0
+            ],
+            "vae": [
+                "18",
+                0
+            ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+            "title": "VAE Decode"
+        }
+    },
+    "4": {
+        "inputs": {
+            "unet_name": "flux1-fill-dev.safetensors",
+            "weight_dtype": "default"
+        },
+        "class_type": "UNETLoader",
+        "_meta": {
+            "title": "Load Diffusion Model"
+        }
+    },
+    "5": {
+        "inputs": {
+            "guidance": 30,
+            "conditioning": [
+                "10",
+                0
+            ]
+        },
+        "class_type": "FluxGuidance",
+        "_meta": {
+            "title": "FluxGuidance"
+        }
+    },
+    "6": {
+        "inputs": {
+            "model": [
+                "4",
+                0
+            ]
+        },
+        "class_type": "DifferentialDiffusion",
+        "_meta": {
+            "title": "Differential Diffusion"
+        }
+    },
+    "9": {
+        "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn_scaled.safetensors",
+            "type": "flux",
+            "device": "default"
+        },
+        "class_type": "DualCLIPLoader",
+        "_meta": {
+            "title": "DualCLIPLoader"
+        }
+    },
+    "10": {
+        "inputs": {
+            "text": "a red velvet sofa and a coffee table",
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            },
+            "clip": [
+                "9",
+                0
+            ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+            "title": "CLIP Text Encode (Prompt)"
+        }
+    },
+    "11": {
+        "inputs": {
+            "text": "",
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            },
+            "clip": [
+                "9",
+                0
+            ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+            "title": "CLIP Text Encode (Prompt)"
+        }
+    },
+    "12": {
+        "inputs": {
+            "strength": 1.0000000000000002,
+            "start_percent": 0,
+            "end_percent": 0.7000000000000002,
+            "positive": [
+                "5",
+                0
+            ],
+            "negative": [
+                "11",
+                0
+            ],
+            "control_net": [
+                "16",
+                0
+            ],
+            "image": [
+                "26",
+                0
+            ],
+            "vae": [
+                "18",
+                0
+            ]
+        },
+        "class_type": "ControlNetApplyAdvanced",
+        "_meta": {
+            "title": "Apply ControlNet"
+        }
+    },
+    "16": {
+        "inputs": {
+            "control_net_name": "flux-depth-controlnet-v3.safetensors"
+        },
+        "class_type": "ControlNetLoader",
+        "_meta": {
+            "title": "Load ControlNet Model"
+        }
+    },
+    "18": {
+        "inputs": {
+            "vae_name": "ae.sft"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+            "title": "Load VAE"
+        }
+    },
+    "20": {
+        "inputs": {
+            "image": "input_image"
+        },
+        "class_type": "LoadImage",
+        "_meta": {
+            "title": "Load Image"
+        }
+    },
+    "22": {
+        "inputs": {
+            "image": [
+                "20",
+                0
+            ]
+        },
+        "class_type": "FluxKontextImageScale",
+        "_meta": {
+            "title": "FluxKontextImageScale"
+        }
+    },
+    "26": {
+        "inputs": {
+            "ckpt_name": "depth_anything_v2_vitl.pth",
+            "resolution": 1024,
+            "image": [
+                "22",
+                0
+            ]
+        },
+        "class_type": "DepthAnythingV2Preprocessor",
+        "_meta": {
+            "title": "Depth Anything V2 - Relative"
+        }
+    },
+    "28": {
+        "inputs": {
+            "text_input": "sofa",
+            "task": "caption_to_phrase_grounding",
+            "fill_mask": true,
+            "keep_model_loaded": true,
+            "max_new_tokens": 1024,
+            "num_beams": 3,
+            "do_sample": true,
+            "output_mask_select": "",
+            "seed": 513131399535392,
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            },
+            "image": [
+                "22",
+                0
+            ],
+            "florence2_model": [
+                "34",
+                0
+            ]
+        },
+        "class_type": "Florence2Run",
+        "_meta": {
+            "title": "Florence2Run"
+        }
+    },
+    "29": {
+        "inputs": {
+            "text_input": "table",
+            "task": "caption_to_phrase_grounding",
+            "fill_mask": true,
+            "keep_model_loaded": true,
+            "max_new_tokens": 1024,
+            "num_beams": 3,
+            "do_sample": true,
+            "output_mask_select": "",
+            "seed": 331037120747070,
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            },
+            "image": [
+                "22",
+                0
+            ],
+            "florence2_model": [
+                "34",
+                0
+            ]
+        },
+        "class_type": "Florence2Run",
+        "_meta": {
+            "title": "Florence2Run"
+        }
+    },
+    "31": {
+        "inputs": {
+            "expand": 2,
+            "tapered_corners": true,
+            "mask": [
+                "28",
+                1
+            ]
+        },
+        "class_type": "GrowMask",
+        "_meta": {
+            "title": "GrowMask"
+        }
+    },
+    "32": {
+        "inputs": {
+            "expand": 2,
+            "tapered_corners": true,
+            "mask": [
+                "29",
+                1
+            ]
+        },
+        "class_type": "GrowMask",
+        "_meta": {
+            "title": "GrowMask"
+        }
+    },
+    "33": {
+        "inputs": {
+            "x": 0,
+            "y": 0,
+            "operation": "add",
+            "destination": [
+                "31",
+                0
+            ],
+            "source": [
+                "32",
+                0
+            ]
+        },
+        "class_type": "MaskComposite",
+        "_meta": {
+            "title": "MaskComposite"
+        }
+    },
+    "34": {
+        "inputs": {
+            "model": "microsoft/Florence-2-large-ft",
+            "precision": "fp16",
+            "attention": "sdpa"
+        },
+        "class_type": "DownloadAndLoadFlorence2Model",
+        "_meta": {
+            "title": "DownloadAndLoadFlorence2Model"
+        }
+    },
+    "43": {
+        "inputs": {
+            "guidance": 3.5,
+            "conditioning": [
+                "51",
+                0
+            ]
+        },
+        "class_type": "FluxGuidance",
+        "_meta": {
+            "title": "FluxGuidance"
+        }
+    },
+    "46": {
+        "inputs": {
+            "model": [
+                "57",
+                0
+            ]
+        },
+        "class_type": "DifferentialDiffusion",
+        "_meta": {
+            "title": "Differential Diffusion"
+        }
+    },
+    "47": {
+        "inputs": {
+            "samples": [
+                "50",
+                0
+            ],
+            "vae": [
+                "58",
+                0
+            ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+            "title": "VAE Decode"
+        }
+    },
+    "48": {
+        "inputs": {
+            "text": "",
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            },
+            "clip": [
+                "55",
+                0
+            ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+            "title": "CLIP Text Encode (Prompt)"
+        }
+    },
+    "50": {
+        "inputs": {
+            "seed": 411200068566536,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "beta",
+            "denoise": 0.4000000000000001,
+            "model": [
+                "46",
+                0
+            ],
+            "positive": [
+                "43",
+                0
+            ],
+            "negative": [
+                "48",
+                0
+            ],
+            "latent_image": [
+                "53",
+                0
+            ]
+        },
+        "class_type": "KSampler",
+        "_meta": {
+            "title": "KSampler"
+        }
+    },
+    "51": {
+        "inputs": {
+            "text": "a furnished room with sofa and table",
+            "speak_and_recognation": {
+                "__value__": [
+                    false,
+                    true
+                ]
+            },
+            "clip": [
+                "55",
+                0
+            ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+            "title": "CLIP Text Encode (Prompt)"
+        }
+    },
+    "52": {
+        "inputs": {
+            "images": [
+                "59",
+                0
+            ]
+        },
+        "class_type": "PreviewImage",
+        "_meta": {
+            "title": "Preview Image"
+        }
+    },
+    "53": {
+        "inputs": {
+            "pixels": [
+                "3",
+                0
+            ],
+            "vae": [
+                "58",
+                0
+            ]
+        },
+        "class_type": "VAEEncode",
+        "_meta": {
+            "title": "VAE Encode"
+        }
+    },
+    "55": {
+        "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn_scaled.safetensors",
+            "type": "flux",
+            "device": "default"
+        },
+        "class_type": "DualCLIPLoader",
+        "_meta": {
+            "title": "DualCLIPLoader"
+        }
+    },
+    "57": {
+        "inputs": {
+            "unet_name": "flux1-dev-fp8.safetensors",
+            "weight_dtype": "default"
+        },
+        "class_type": "UNETLoader",
+        "_meta": {
+            "title": "Load Diffusion Model"
+        }
+    },
+    "58": {
+        "inputs": {
+            "vae_name": "ae.safetensors"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+            "title": "Load VAE"
+        }
+    },
+    "59": {
+        "inputs": {
+            "method": "reinhard",
+            "strength": 1,
+            "image_ref": [
+                "22",
+                0
+            ],
+            "image_target": [
+                "47",
+                0
+            ]
+        },
+        "class_type": "ColorMatch",
+        "_meta": {
+            "title": "Color Match"
+        }
+    }
+}
