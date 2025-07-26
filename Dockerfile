@@ -23,7 +23,7 @@ RUN comfy model download --url https://huggingface.co/Comfy-Org/Lumina_Image_2.0
 
 # Flux ControlNet Model
 RUN comfy model download --url https://huggingface.co/XLabs-AI/flux-controlnet-depth-v3/resolve/main/flux-depth-controlnet-v3.safetensors --relative-path models/xlabs/controlnets --filename flux-depth-controlnet-v3.safetensors
-
+RUN comfy model download --url https://huggingface.co/XLabs-AI/flux-controlnet-depth-v3/resolve/main/flux-depth-controlnet-v3.safetensors --relative-path models/controlnets --filename flux-depth-controlnet-v3.safetensors
 # Depth ControlNet Model
 RUN comfy model download --url "https://huggingface.co/spaces/depth-anything/Depth-Anything-V2"  --relative-path models/controlnet --filename depth_anything_v2_vitl.pth
 # /comfyui/models/controlnet/depth-anything
