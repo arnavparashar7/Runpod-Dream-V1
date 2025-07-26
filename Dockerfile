@@ -16,7 +16,7 @@ RUN comfy model download --url https://huggingface.co/comfyanonymous/flux_text_e
 # UNET/Diffusion Model
 RUN comfy model download --url https://huggingface.co/Comfy-Org/flux1-kontext-dev_ComfyUI/resolve/main/split_files/diffusion_models/flux1-dev-kontext_fp8_scaled.safetensors --relative-path models/diffusion_models --filename flux1-dev-kontext_fp8_scaled.safetensors
 RUN comfy model download --url https://huggingface.co/Kijai/flux-fp8/resolve/main/flux1-dev-fp8.safetensors --relative-path models/diffusion_models --filename flux1-dev-fp8.safetensors
-RUN comfy model download --url https://huggingface.co/black-forest-labs/FLUX.1-Fill-dev/blob/main/flux1-fill-dev.safetensors --relative-path models/diffusion_models --filename flux1-fill-dev.safetensors
+RUN wget https://huggingface.co/GraydientPlatformAPI/flux-inpainting-faster/resolve/main/flux-fill-inpainting-fp8-yogotatara.safetensors -O /comfyui/models/diffusion_models/flux1-fill-dev.safetensors
 
 # VAE
 RUN comfy model download --url https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors --relative-path models/vae --filename ae.safetensors
